@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import MyFooter from './MyFooter';
 import MyHeader from './MyHeader';
+import Counter from './Counter'
 
 function App() {
   let framework = "React";
@@ -9,8 +10,7 @@ function App() {
   return (
     <div className="App">
       <MyHeader />
-        <h2>Hello {framework}!!</h2>
-        <b id="bold_text">{framework}??</b>
+      <Counter />
       <MyFooter />
     </div>
   );
