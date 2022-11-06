@@ -1,50 +1,43 @@
+import {useState, useRef} from 'react';
 import DiaryEditor from './DiaryEditor';
 import './App.css';
 import DiaryList from './DiaryList';
 
-const dummyList = [
-  {
-    id: 1, 
-    author: "jaeseok",
-    content: "hello react!",
-    emotion: 1,
-    createdDate: new Date().getTime()
-  }, 
-  {
-    id: 2, 
-    author: "jeeyu",
-    content: "hello java!",
-    emotion: 5,
-    createdDate: new Date().getTime()
-  }, 
-  {
-    id: 3, 
-    author: "doong",
-    content: "hello javascript!",
-    emotion: 2,
-    createdDate: new Date().getTime()
-  }, 
-  {
-    id: 4, 
-    author: "hyojung",
-    content: "hello html!",
-    emotion: 3,
-    createdDate: new Date().getTime()
-  }, 
-  {
-    id: 5, 
-    author: "taehee",
-    content: "hello css!",
-    emotion: 4,
-    createdDate: new Date().getTime()
-  }, 
-];
-
 function App() {
+  const [data, setData] = useState([]);
+  const dataId = useRef(1);
+  const onCreate = (author, content, emotion) => {
+    const createdDate = new Date().getTime();
+    const newItem = {
+      author,
+      content,
+      emotion,
+      createdDate,
+      id : dataId.current
+    };
+    dataId.current += 1;
+    
+    setData([
+      newItem,
+      ...data
+    ])
+  };
+  
+  const onRemove = (id) => {
+    const newDiaryList = data.filter((diary)=>(diary.id != id));
+    setData(newDiaryList);
+  }
+
+  const onEdit = (id, newContent) => {
+    const newDiaryList = data.map((diary)=>(
+          diary.id === id ? {...diary, content: newContent} : diary));
+
+    setData(newDiaryList);          
+  }
   return (
     <div className="App">
-      <DiaryEditor />
-      <DiaryList diaries={dummyList}/>
+      <DiaryEditor onCreate={onCreate}/>
+      <DiaryList onEdit={onEdit} onRemove={onRemove} diaries={data}/>
     </div>
   );
 }
